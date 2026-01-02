@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Instamart</string>
+    <string name="greeting_text">Hello,World!</string>
 </resources>
