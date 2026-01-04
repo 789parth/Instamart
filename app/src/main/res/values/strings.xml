@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Instamart</string>
     <string name="greeting_text">Hello,World!</string>
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Sign in to continue</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Log In</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="signup_prompt">Don\'t have an account?</string>
+    <string name="signup_action">Sign Up</string>
 </resources>
