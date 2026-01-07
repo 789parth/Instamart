@@ -28,26 +28,26 @@ public class LoginActivity extends AppCompatActivity {
             String password = Objects.requireNonNull(tilPassword.getEditText()).getText().toString();
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_enter_email_password, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Login clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.msg_login_clicked, Toast.LENGTH_SHORT).show();
             }
         });
 
         tvForgotPassword.setOnClickListener(v ->
-                Toast.makeText(this, "Forgot Password clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.msg_forgot_password_clicked, Toast.LENGTH_SHORT).show()
         );
 
         btnGoogle.setOnClickListener(v ->
-                Toast.makeText(this, "Google Login clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.msg_google_login_clicked, Toast.LENGTH_SHORT).show()
         );
 
         btnFacebook.setOnClickListener(v ->
-                Toast.makeText(this, "Facebook Login clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.msg_facebook_login_clicked, Toast.LENGTH_SHORT).show()
         );
 
         tvSignupAction.setOnClickListener(v ->
-                Toast.makeText(this, "Navigate to Signup", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.msg_navigate_signup, Toast.LENGTH_SHORT).show()
         );
     }
 }
