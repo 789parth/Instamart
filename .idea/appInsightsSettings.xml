@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.instamart" />
+                  <option name="mobileSdkAppId" value="1:553688533492:android:f6d2ab676d982a735811a1" />
+                  <option name="projectId" value="instamart-66565e84" />
+                  <option name="projectNumber" value="553688533492" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
