@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "553688533492",
+    "project_id": "instamart-66565e84",
+    "storage_bucket": "instamart-66565e84.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553688533492:android:f6d2ab676d982a735811a1",
+        "android_client_info": {
+          "package_name": "com.example.instamart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaVCwES8YzS6m16tM5qi2W9_rDaKW2pm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
