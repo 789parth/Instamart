@@ -1,8 +1,11 @@
 package com.example.instamart;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +16,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -29,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout tilPhone, tilOtp;
     private MaterialButton btnSendOtp, btnVerifyOtp;
     private TextView tvResendOtp;
+    private ProgressBar pbLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSendOtp = findViewById(R.id.btnSendOtp);
         btnVerifyOtp = findViewById(R.id.btnVerifyOtp);
         tvResendOtp = findViewById(R.id.tvResendOtp);
+        pbLoading = findViewById(R.id.pbLoading);
 
         btnSendOtp.setOnClickListener(v -> sendOtp());
         btnVerifyOtp.setOnClickListener(v -> verifyOtp());
@@ -51,34 +57,24 @@ public class LoginActivity extends AppCompatActivity {
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                // This callback will be invoked in two situations:
-                // 1 - Instant verification. In some cases the phone number can be instantly
-                //     verified without needing to send or enter a verification code.
-                // 2 - Auto-retrieval. On some devices Google Play services can automatically
-                //     detect the incoming verification SMS and perform verification without
-                //     user action.
                 signInWithPhoneAuthCredential(credential);
             }
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                // This callback is invoked in an invalid request for verification is made,
-                // for instance if the the phone number format is not valid.
-                Toast.makeText(LoginActivity.this, getString(R.string.error_verification_failed, e.getMessage()), Toast.LENGTH_LONG).show();
+                hideLoading();
+                Toast.makeText(LoginActivity.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onCodeSent(@NonNull String verificationId,
                                    @NonNull PhoneAuthProvider.ForceResendingToken token) {
-                // The SMS verification code has been sent to the provided phone number, we
-                // now need to ask the user to enter the code and then construct a credential
-                // by combining the code with a verification ID.
+                hideLoading();
                 mVerificationId = verificationId;
                 mResendToken = token;
 
-                Toast.makeText(LoginActivity.this, R.string.msg_otp_sent, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "OTP has been sent", Toast.LENGTH_SHORT).show();
 
-                // Update UI
                 if (tilPhone.getEditText() != null) {
                     tilPhone.setEnabled(false);
                 }
@@ -89,6 +85,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
     }
+    
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            // User is already signed in, navigate to MainActivity
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
+    }
 
     private void sendOtp() {
         String phoneNumber = "";
@@ -97,11 +105,17 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (TextUtils.isEmpty(phoneNumber)) {
-            Toast.makeText(this, R.string.error_enter_phone, Toast.LENGTH_SHORT).show();
+            tilPhone.setError("Please enter your phone number");
             return;
+        } else if (phoneNumber.length() != 10) {
+            tilPhone.setError("Please enter a valid 10-digit phone number");
+            return;
+        } else {
+            tilPhone.setError(null);
         }
 
-        startPhoneNumberVerification(phoneNumber);
+        showLoading();
+        startPhoneNumberVerification("+91" + phoneNumber);
     }
 
     private void startPhoneNumberVerification(String phoneNumber) {
@@ -122,11 +136,17 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (TextUtils.isEmpty(code)) {
-            Toast.makeText(this, R.string.error_enter_otp, Toast.LENGTH_SHORT).show();
+            tilOtp.setError("Please enter the OTP");
             return;
+        } else if (code.length() != 6) {
+            tilOtp.setError("Please enter a valid 6-digit OTP");
+            return;
+        } else {
+            tilOtp.setError(null);
         }
 
         if (mVerificationId != null) {
+            showLoading();
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
             signInWithPhoneAuthCredential(credential);
         }
@@ -139,13 +159,14 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (TextUtils.isEmpty(phoneNumber) || mResendToken == null) {
-            Toast.makeText(this, R.string.error_resend_otp, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cannot resend OTP at this time", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        showLoading();
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber(phoneNumber)
+                        .setPhoneNumber("+91" + phoneNumber)
                         .setTimeout(60L, TimeUnit.SECONDS)
                         .setActivity(this)
                         .setCallbacks(mCallbacks)
@@ -157,15 +178,29 @@ public class LoginActivity extends AppCompatActivity {
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
+                    hideLoading();
                     if (task.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, R.string.msg_login_success, Toast.LENGTH_SHORT).show();
-                        // Proceed to next activity
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser user = task.getResult().getUser();
+                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
-                        Toast.makeText(LoginActivity.this, R.string.msg_login_failed, Toast.LENGTH_SHORT).show();
+                        // Sign in failed, display a message and update the UI
+                        Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                         if (task.getException() != null) {
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    private void showLoading() {
+        pbLoading.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoading() {
+        pbLoading.setVisibility(View.GONE);
     }
 }
