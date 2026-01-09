@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/gradient_background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_xlarge">
+
+        <LinearLayout
+            android:id="@+id/llHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline">
+
+            <ImageView
+                android:id="@+id/ivAppIcon"
+                android:layout_width="@dimen/login_app_icon_size"
+                android:layout_height="@dimen/login_app_icon_size"
+                android:src="@drawable/ic_app_logo"
+                app:tint="@color/white"
+                android:contentDescription="@null"/>
+
+            <TextView
+                android:id="@+id/tvAppTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_xxlarge"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-black"
+                android:layout_marginTop="@dimen/spacing_large"/>
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardLogin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/login_card_corner_radius"
+            app:cardElevation="@dimen/login_card_elevation"
+            app:cardBackgroundColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_xlarge">
+
+                <TextView
+                    android:id="@+id/tvLoginTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_title"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="@dimen/font_size_xlarge"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvLoginSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_subtitle"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="@dimen/font_size_medium"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    app:layout_constraintTop_toBottomOf="@id/tvLoginTitle"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPhone"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/phone_hint"
+                    android:layout_marginTop="@dimen/spacing_xlarge"
+                    app:hintTextColor="@color/colorTextSecondary"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusTopStart="@dimen/login_button_corner_radius"
+                    app:boxCornerRadiusTopEnd="@dimen/login_button_corner_radius"
+                    app:boxCornerRadiusBottomStart="@dimen/login_button_corner_radius"
+                    app:boxCornerRadiusBottomEnd="@dimen/login_button_corner_radius"
+                    app:startIconDrawable="@drawable/ic_phone"
+                    app:startIconTint="@color/colorPrimary"
+                    app:layout_constraintTop_toBottomOf="@id/tvLoginSubtitle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textColorHint="@color/colorTextSecondary"
+                        android:autofillHints="phone"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSendOtp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/login_button_height"
+                    android:text="@string/send_otp"
+                    android:textSize="@dimen/font_size_large"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:backgroundTint="@color/colorPrimary"
+                    app:cornerRadius="@dimen/login_button_corner_radius"
+                    app:layout_constraintTop_toBottomOf="@id/tilPhone"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilOtp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/otp_hint"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:visibility="gone"
+                    app:hintTextColor="@color/colorTextSecondary"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusTopStart="@dimen/login_button_corner_radius"
+                    app:boxCornerRadiusTopEnd="@dimen/login_button_corner_radius"
+                    app:boxCornerRadiusBottomStart="@dimen/login_button_corner_radius"
+                    app:boxCornerRadiusBottomEnd="@dimen/login_button_corner_radius"
+                    app:startIconTint="@color/colorPrimary"
+                    app:layout_constraintTop_toBottomOf="@id/btnSendOtp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etOtp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textColorHint="@color/colorTextSecondary"
+                        android:autofillHints="smsOTP"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnVerifyOtp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/login_button_height"
+                    android:text="@string/verify_otp"
+                    android:textSize="@dimen/font_size_large"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:visibility="gone"
+                    app:cornerRadius="@dimen/login_button_corner_radius"
+                    app:layout_constraintTop_toBottomOf="@id/tilOtp"/>
+
+                <TextView
+                    android:id="@+id/tvResendOtp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/resend_otp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/btnVerifyOtp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
