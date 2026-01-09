@@ -1,22 +1,22 @@
 <resources>
     <string name="app_name">Instamart</string>
     <string name="login_title">Welcome Back</string>
-    <string name="login_subtitle">Sign in to continue</string>
-    <string name="email_hint">Email</string>
-    <string name="password_hint">Password</string>
-    <string name="login_button">Log In</string>
-    <string name="forgot_password">Forgot Password?</string>
+    <string name="login_subtitle">Sign in with mobile number</string>
+    <string name="phone_hint">Mobile Number</string>
+    <string name="otp_hint">Enter OTP</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="resend_otp">Resend OTP</string>
     <string name="signup_prompt">Don\'t have an account?</string>
     <string name="signup_action">Sign Up</string>
     <string name="nav_login_button">Login</string>
-    <string name="social_login_label">Or login with</string>
-    <string name="btn_google">Google</string>
-    <string name="btn_facebook">Facebook</string>
-    <string name="error_enter_email_password">Please enter email and password</string>
-    <string name="msg_login_clicked">Login clicked</string>
-    <string name="msg_forgot_password_clicked">Forgot Password clicked</string>
-    <string name="msg_google_login_clicked">Google Login clicked</string>
-    <string name="msg_facebook_login_clicked">Facebook Login clicked</string>
+    <string name="error_enter_phone">Please enter mobile number</string>
+    <string name="error_enter_otp">Please enter OTP</string>
+    <string name="msg_otp_sent">OTP Sent</string>
+    <string name="msg_login_success">Login Successful</string>
+    <string name="msg_login_failed">Authentication Failed</string>
     <string name="msg_navigate_signup">Navigate to Signup</string>
     <string name="greeting_text">Hello World!</string>
+    <string name="error_verification_failed">Verification Failed: %1$s</string>
+    <string name="error_resend_otp">Cannot resend OTP</string>
 </resources>
