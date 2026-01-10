@@ -7,6 +7,17 @@ android {
     namespace = "com.example.instamart"
     compileSdk = 36
 
+    signingConfigs {
+        create("release") {
+            // You need to create a keystore and add its details here
+            // For example:
+            // storeFile = file("my-release-key.jks")
+            // storePassword = "password"
+            // keyAlias = "my-alias"
+            // keyPassword = "password"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.example.instamart"
         minSdk = 23
@@ -28,6 +39,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
