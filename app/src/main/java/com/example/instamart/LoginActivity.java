@@ -3,7 +3,6 @@ package com.example.instamart;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,6 +15,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
     }
-    
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -181,7 +181,6 @@ public class LoginActivity extends AppCompatActivity {
                     hideLoading();
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        FirebaseUser user = task.getResult().getUser();
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -189,8 +188,11 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         // Sign in failed, display a message and update the UI
                         Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                        if (task.getException() != null) {
-                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            // The verification code entered was invalid
+                            tilOtp.setError("Invalid OTP");
+                        } else if (task.getException() != null) {
+                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -198,9 +200,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoading() {
         pbLoading.setVisibility(View.VISIBLE);
+        btnSendOtp.setEnabled(false);
+        btnVerifyOtp.setEnabled(false);
+        tvResendOtp.setEnabled(false);
     }
 
     private void hideLoading() {
         pbLoading.setVisibility(View.GONE);
+        btnSendOtp.setEnabled(true);
+        btnVerifyOtp.setEnabled(true);
+        tvResendOtp.setEnabled(true);
     }
 }
